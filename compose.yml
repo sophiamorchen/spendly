@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:9.7.4
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    # ports:
+    #   - "127.0.0.1:3307:3306"
+    volumes:
+      - data_spendly:/var/lib/mysql
+      - ./spendly.sql:/docker-entrypoint-initdb.d/spendly.sql
+
+  pdpmyamdin:
+    image: phpmyadmin:5.2.3
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: db
+
+
+  web:
+    build: .
+    ports: 
+    - "80:80"
+    env_file:
+    - .env
+    volumes:
+      - ./app:/var/www/html/
+
+volumes:
+  data_spendly:
+
+    
