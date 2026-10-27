@@ -1,6 +1,8 @@
 <?php
+// contient le ssession_start(); 
+require_once __DIR__ . "/../libs/init.php";
 
-require_once __DIR__ . "/../libs/pdo.php";
+
 $mainMenu = [
     "index.php" => "Accueil",
     "a-propos.php" => "A propos",
@@ -24,10 +26,11 @@ $mainMenu = [
 </head>
 
 <body>
+
     <div class="container">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             <div class="col-md-3 mb-2 mb-md-0">
-                <img src="/assets/images/spendly.svg" alt="">
+                <img src="/assets/images/spendly.svg" alt="Logo spendly" width="150">
 
             </div>
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -38,8 +41,16 @@ $mainMenu = [
 
             </ul>
             <div class="col-md-3 text-end">
-                <a href="inscription.php" type="button" class="btn btn-outline-primary me-2">Inscription</a>
-                <a href="connection.php" type="button" class="btn btn-primary">Se connecter</a>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <div class="d-flex flex-row">
+                        <p class="px-3">Connecté en tant que <?= $_SESSION['user']['email']  ?></p>
+                        <a href="logout.php" type="button" class="btn btn-primary">Se déconnecter</a>
+                    </div>
+                <?php else: ?>
+                    <a href="inscription.php" type="button" class="btn btn-outline-primary me-2">Inscription</a>
+                    <a href="connection.php" type="button" class="btn btn-primary">Se connecter</a>
+                <?php endif ?>
+
             </div>
         </header>
     </div>

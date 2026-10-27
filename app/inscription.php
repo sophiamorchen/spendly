@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/libs/init.php";
+require_once __DIR__ . "/libs/users.php";
 function validateForm()
 {
     $errors = [];
@@ -23,13 +25,26 @@ function validateForm()
 
 $errors = validateForm();
 
-if (isset($_POST['submit']) && !$errors) {
-    header("Location: /index.php");
-    exit;
+if (isset($_POST['submit']) && count($errors) === 0) {
+    try {
+        addUser($pdo, $_POST['email'], $_POST['password']);
+        header("Location: /connection.php");
+        exit;
+    } catch (PDOException $e) {
+        // errorInfo[1] = code erreur mysql
+        if ($e->errorInfo[1] === 1062) {
+            // cas où l'email est déjà présent en bdd
+            $errors[] = "Cet email est deja utilisé";
+        } else {
+            // autre erreur sql
+            $errors[] = "Une erreur est survenue";
+        }
+    }
 }
 
-
 require_once __DIR__ . "/templates/header.php";
+
+
 ?>
 
 
