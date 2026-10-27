@@ -6,9 +6,10 @@ require_once __DIR__ . "/../libs/init.php";
 $mainMenu = [
     "index.php" => "Accueil",
     "a-propos.php" => "A propos",
-    "inscription.php" => "Inscription",
-    "connection.php" => "Connection"
-]
+];
+if (isset($_SESSION['user'])) {
+    $mainMenu["depenses.php"] = "Mes dépenses";
+}
 
 ?>
 
@@ -40,15 +41,15 @@ $mainMenu = [
                 <?php endforeach ?>
 
             </ul>
-            <div class="col-md-3 text-end">
+            <div class="col-md-3">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <div class="d-flex flex-row">
-                        <p class="px-3">Connecté en tant que <?= $_SESSION['user']['email']  ?></p>
-                        <a href="logout.php" type="button" class="btn btn-primary">Se déconnecter</a>
+                    <div class="d-flex flex-row align-items-center">
+                        <p class="px-3">Logged-in as : <?= $_SESSION['user']['email']  ?></p>
+                        <a href="logout.php" type="button" class="btn btn-primary">Logout</a>
                     </div>
                 <?php else: ?>
-                    <a href="inscription.php" type="button" class="btn btn-outline-primary me-2">Inscription</a>
-                    <a href="connection.php" type="button" class="btn btn-primary">Se connecter</a>
+                    <a href="inscription.php" type="button" class="btn btn-outline-primary me-2">Subscribe</a>
+                    <a href="connection.php" type="button" class="btn btn-primary">Login</a>
                 <?php endif ?>
 
             </div>
